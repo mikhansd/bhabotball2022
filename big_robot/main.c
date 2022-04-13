@@ -1,5 +1,17 @@
 #include <kipr/wombat.h>
 int distance;
+void botGuy();
+void botGuyTwo();
+void forward();
+void backward();
+void clawOpen();
+void forwardUntilBlack();
+void forwardUntilBlackScnd();
+void armUp();
+void backwardUntilBump();
+void clawClose();
+void armMiddle();
+
 
 int main()
 {
@@ -9,6 +21,7 @@ int main()
     distance =  get_create_distance();
 	//Does Botguy mission
     botGuyTwo();
+    create_stop();
     return 0; 
     
 }
@@ -53,7 +66,7 @@ void turnRightHalf(){
 }
 void forwardSlow(){
     create_drive_direct(-100,-100);
-    msleep(5500);
+    msleep(4750);
     create_stop();
     msleep(250);
 }
@@ -75,21 +88,18 @@ void turnRightSlow(int time){
     create_stop();
     msleep(250);
 }
-void followBlack(){
-    while ((analog(2) < 1200)){
-    	while(analog(0)<2500){
-        	turnLeftSlow(250);
+void followBlack(int x, int y){
+    while(x < y){
+    	if(analog(0)<2000){
+        	create_drive_direct(-25,10);
         }
-        forward(50);
-        create_stop();
-    	msleep(250);
-        while(analog(0)>2500){
-            turnRightSlow(250);
+    	
+        if (analog(0)>2000){
+            create_drive_direct(10,-25);
         }
-        forward(100);
-        create_stop();
-    	sleep(250);
+        x = x + 1;
     }
+    
 }
 void forwardUntilBump(){
     
@@ -105,26 +115,48 @@ void botGuy(){
     //armUp();
     turnLeftSlow(2350);
     forwardUntilBlack();
-    forwardUntilWhite();
+    //forwardUntilWhite();
     forward(250);
-    turnRightUntilBlack();
+    //turnRightUntilBlack();
     //followBlack(); 
 }
 void botGuyTwo(){
     armUp();
+    clawOpen();
     create_stop();
     msleep(1000);
     turnLeftSlow(2750);
     forward(1000);
     backward(350);
     turnLeftSlow(1600);
-    forward(1000);
+    forward(1100);
     forwardUntilBlackScnd();
-    turnLeftSlow(1600);
+    turnLeftSlow(1700);
     backwardUntilBump();
     forwardUntilBlack();
-    forward(300);
-    followBlack();
+    forward(1500);
+    clawClose();
+    create_stop();
+    msleep(2000);
+    backward(350);
+    turnLeftSlow(1500);
+    //armMiddle();
+    create_stop();
+    msleep(1000);
+    forward(5000);
+    turnLeftSlow(1350);
+    create_stop();
+    msleep(1000);
+    clawOpen();
+    create_stop();
+    msleep(1000);
+    turnLeftSlow(250);
+    forwardSlow();
+    backward(2000);
+    //turnLeftSlow(500);
+    //clawOpen();
+    
+    
     
 }
 void findBlack(){
@@ -150,6 +182,7 @@ void forwardUntilBlackScnd(){
         create_drive_direct(-100,-100);
     }
 }
+
 void forwardUntilWhite(){
     while (analog(0) > 900){
         create_drive_direct(-100,-100);
@@ -170,17 +203,17 @@ void armUp(){
 }
 
 void armDown(){
-    set_servo_position(1, 144);
+    set_servo_position(0, 144);
 }
 
 void armMiddle(){
-    set_servo_position(1, 558);
+    set_servo_position(0, 558);
 }
 void clawClose(){
-    set_servo_position(0, 150);
+    set_servo_position(1, 0);
 }
 void clawOpen(){
-    set_servo_position(0, 956);
+    set_servo_position(1, 956);
 }
 
 
